@@ -14,11 +14,12 @@ typedef struct DATA {
     int *faces_cords;
 } data_t;
 
-data_t Parsing(const char* filename);
-void ParseVertex(char *line, double *array_of_cords, int *index_of_cords);
-void ParseFaces(char *line, int *array_of_cords, int *index_of_cords);
-void ParseVertFacCount(FILE *fpen, int* vertex_count, int *faces_count);
-void PrintCords(int vertex_count, double *vertex_cords);
-void PrintCords2(int faces_count, int *vertex_cords);
+int Parsing(const char* filename, data_t *obj);
+void ParseVertex(char *line, data_t *obj, int *index_of_cords);
+int ParseFaces(char *line, data_t *obj, int index_of_cords);
+void ParseVertFacCount(FILE *fpen, data_t *obj);
+void PrintCords(data_t *obj);
+void PrintCords2(data_t *obj);
+int s21_digit_supp(char ind);
 
 #endif  // SRC_PARSER_H

@@ -1,7 +1,8 @@
 #include "parser.h"
 
 int main() {
-    const char* filename = "/Users/marcelit/Desktop/3dViewer1.0/C8_3DViewer_v1.0-0-master/src/machine.obj";
-    Parsing(filename);
+    data_t obj = {};
+    const char* filename = "/opt/goinfre/marcelit/C8_3DViewer_v1.0-0-master/src/machine.obj";
+    Parsing(filename, &obj);
     return 0;
 }
