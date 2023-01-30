@@ -5,7 +5,7 @@ int Parsing(const char* filename, data_t *obj) {
     int result = 0;
 
     int index_faces_cords = 0, index_vertex_cords = 0;
-    char line[40];
+    char line[255] = {};
 
 
     if (fpen != NULL) {
@@ -13,21 +13,19 @@ int Parsing(const char* filename, data_t *obj) {
         ParseVertFacCount(fpen, obj);
         
         if ((*obj).vertex_count > 0 && (*obj).faces_count > 0) {
-            (*obj).vertex_cords = calloc((*obj).vertex_count*3, sizeof(double));
-            (*obj).faces_cords = calloc((*obj).faces_count*2, sizeof(int));
+            (*obj).vertex_cords = malloc((*obj).vertex_count * 3 * sizeof(double) + 1);
+            (*obj).faces_cords = malloc((*obj).faces_count * 2 * sizeof(int) + 1);
         }
 
         
         // Добавляем всё в массив
         fpen = fopen(filename, "r");
-        while (fgets(line, 40, fpen) != NULL) {
-            if (line[0] == 'v') {
+        while (fgets(line, 255, fpen) != NULL) {
+            if (line[0] == 'v' && line[1] == ' ') {
                 ParseVertex(line, obj, &index_vertex_cords);
-            } else if (line[0] == 'f') {
+            } else if (line[0] == 'f' && line[1] == ' ') {
                 index_faces_cords = ParseFaces(line, obj, index_faces_cords);
             }
-
-            memset(line,0,strlen(line));
         }
 
         PrintCords(obj);
@@ -62,19 +60,20 @@ void ParseVertex(char *line, data_t *obj, int *index_of_cords) {
 int ParseFaces(char *line, data_t *obj, int index_of_cords) {
     int closure_dig = '\0';
     int i_flag = 0;
-    long int digital;
     for (size_t i = 0; i < strlen(line); i++) {
+        long int digital = 0;
         if (line[i] == ' ' && s21_digit_supp(line[++i])) {
             ++i_flag;
             char str[10] = {'\0'};
             int j = 0;
-            while (s21_digit_supp(line[i])) {
+            int i_str = i;
+            while (s21_digit_supp(line[i_str])) {
                 str[j] = line[i];
-                i++;
+                i_str++;
                 j++;
             }
             char *dig_end;
-            digital = strtol(str, &dig_end, 10) - 1;
+            digital = strtol(str, &dig_end, 10);
             (*obj).faces_cords[index_of_cords] = digital;
 
             if (i_flag == 1) {
@@ -128,13 +127,13 @@ void PrintCords(data_t *obj) {
 
 void PrintCords2(data_t *obj) {
     printf("---%d---\n", (*obj).faces_count);
-    int j = 1;
-    for (int i = 0; i < (*obj).faces_count; i++) {
+    // int j = 1;
+    for (int i = 0; i < (*obj).faces_count * 2; i++) {
         printf("%d ", (*obj).faces_cords[i]);
-        if (j % 3 == 0) {
-            printf("\n");
-        }
-        j++;
+        // if (j % 3 == 0) {
+        //     printf("\n");
+        // }
+        // j++;
     }
 }
 

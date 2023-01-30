@@ -1,16 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QColorDialog>
-#include <QFileDialog>
 #include <QMainWindow>
-#include <QMessageBox>
-#include <QSettings>
-#include <QTimer>
-#include <QUrl>
-
-#include "scene.h"
-#include <ui_mainwindow.h>
+#include <QtOpenGL>
 
 extern "C" {
 #include "../src/parser.h"
@@ -28,12 +20,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
-
-    void on_pushButton_clicked();
-
 private:
     Ui::MainWindow *ui;
-    Scene *scene;
 };
 #endif // MAINWINDOW_H

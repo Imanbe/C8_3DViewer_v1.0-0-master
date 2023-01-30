@@ -1,34 +1,20 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <QMessageBox>
-#include <QOpenGLShaderProgram>
-#include <QOpenGLWidget>
 #include <QWidget>
 #include <QtOpenGL>
-
-#define GL_SILENCE_DEPRECATION
-
-extern "C" {
-#include <../src/parser.h>
-}
-
-namespace Ui {
-class Scene;
-}
+#include <QOpenGLWidget>
+#include <QOpenGLShaderProgram>
+#include <stdio.h>
 
 class Scene : public QOpenGLWidget
 {
-    Q_OBJECT
-
 public:
-    Scene(QWidget *parent = nullptr);
-    void InitalizationGL();
-    void ResizeGL(int w, int h);
-    void PaintGL();
+    Scene(QWidget *parent);
 
-private:
-    Ui::Scene *ui;
+    void initializeGL();
+    void paintGL();
+    void resizeGL(int w, int h);
 };
 
 #endif // SCENE_H
