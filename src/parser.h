@@ -2,10 +2,10 @@
 
 #define SRC_PARSER_H
 
-#include "s21_stack.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <errno.h>
 
 typedef struct DATA {
     double vertex_count;

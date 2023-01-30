@@ -1,11 +1,9 @@
 #include "parser.h"
-#include <errno.h>
 
 data_t Parsing(const char* filename) {
     FILE* fpen = fopen(filename, "r");
 
     data_t data_v_f;
-
     int vertex_count = 0, faces_count = 0;
     double* vertex_cords = NULL;
     int* faces_cords = NULL;
@@ -17,8 +15,11 @@ data_t Parsing(const char* filename) {
 
         ParseVertFacCount(fpen, &vertex_count, &faces_count);
         
-        vertex_cords = calloc(vertex_count*3, sizeof(double));
-        faces_cords = calloc(faces_count*3, sizeof(int));
+        if (vertex_count > 0 && faces_count > 0) {
+            vertex_cords = calloc(vertex_count*3, sizeof(double));
+            faces_cords = calloc(faces_count*3, sizeof(int));
+        }
+
         
         // Добавляем всё в массив
         fpen = fopen(filename, "r");
