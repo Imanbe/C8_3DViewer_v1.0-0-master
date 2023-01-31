@@ -12,9 +12,17 @@ class Scene : public QOpenGLWidget
 public:
     Scene(QWidget *parent);
 
-    void initializeGL();
-    void paintGL();
-    void resizeGL(int w, int h);
+private:
+    float xRot, yRot, zRot;
+    QPoint mPos;
+    QTimer tmr;
+    void drawCube(float a);
+    void mousePressEvent(QMouseEvent*) override;
+    void mouseMoveEvent(QMouseEvent*) override;
+    void initializeGL() override;
+    void paintGL() override;
+    void resizeGL(int w, int h) override;
+
 };
 
 #endif // SCENE_H
