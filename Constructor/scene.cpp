@@ -1,4 +1,5 @@
 #include "scene.h"
+#include <iostream>
 
 #define GL_SILENCE_DEPRECATION
 
@@ -13,52 +14,44 @@ void Scene::initializeGL() {
 }
 
 void Scene::paintGL() {
-    glClearColor(0, 1, 0, 0);
+    glClearColor(0, 0, 0, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    glTranslatef(0, 0, -2);
+    glTranslatef(0, 0, -3);
     glRotatef(xRot, 1, 0, 0);
     glRotatef(yRot, 0, 1, 0);
-    drawCube(0.5);
+    glRotatef(zRot, 0, 0, 1);
+    draw();
 }
 
 void Scene::resizeGL(int w, int h) {
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-//    glOrtho(-1, 1, -1, 1, 1, 2);
-    glFrustum(-1, 1, -1, 1, 1, 3);
+    glOrtho(-2, 2, -2, 2, 2, 99999);
+//    glFrustum(-1, 1, -1, 1, 1, 99999);
 }
 
-void Scene::drawCube(float a)
+void Scene::read_file()
 {
-    float ver_cub[] = {
-        -a, -a, a, a, -a, a, a, a, a, -a, a, a,
-        a, -a, -a, -a, -a, -a, -a, a, -a, a, a, -a,
-        -a, -a, -a, -a, -a, a, -a, a, a, -a, a, -a,
-        a, -a, a, a, -a, -a, a, a, -a, a, a, a,
-        -a, -a, a, a, -a, a, a, -a, -a, -a, -a, -a,
-        -a, a, a, a, a, a, a, a, -a, -a, a, -a
-    };
-    float color_arr[] = {
-        1, 0, 0,  1, 0, 0,  1, 0, 0,  1, 0, 0,
-        0, 0, 1,  0, 0, 1,  0, 0, 1,  0, 0, 1,
-        1, 1, 0,  1, 1, 0,  1, 1, 0,  1, 1, 0,
-        0, 1, 1,  0, 1, 1,  0, 1, 1,  0, 1, 1,
-        1, 0, 1,  1, 0, 1,  1, 0, 1,  1, 0, 1,
-        1, 0.5, 0.5,  1, 0.5, 0.5,  1, 0.5, 0.5,  1, 0.5, 0.5
-    };
-    glVertexPointer(3, GL_FLOAT, 0, &ver_cub);
+    QByteArray ba = filepath.toLocal8Bit();  // перевод из Qstring in *str
+    char *path_file = ba.data();
+    Parsing(path_file, &obj);
+//    draw();
+}
+
+void Scene::draw() {
+    glVertexPointer(3, GL_DOUBLE, 0, obj.vertex_cords);
+
     glEnableClientState(GL_VERTEX_ARRAY);
-
-    glColorPointer(3, GL_FLOAT, 0, &color_arr);
-    glEnableClientState(GL_COLOR_ARRAY);
-
-    glDrawArrays(GL_QUADS, 0, 24);
-
-    glDisableClientState(GL_COLOR_ARRAY);
+    glColor3f(1, 1, 1);
+    glDrawArrays(GL_POINTS, 0, obj.vertex_count);
+    glDisable(GL_LINE_STIPPLE);
+    glEnable(GL_LINE);
+    glDrawElements(GL_LINES, (obj.faces_count * 3), GL_UNSIGNED_INT, obj.faces_cords);
+    glLineWidth(1);
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 

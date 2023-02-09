@@ -14,7 +14,7 @@ typedef struct DATA {
     int *faces_cords;
 } data_t;
 
-int Parsing(const char* filename, data_t *obj);
+int Parsing(char* filename, data_t *obj);
 void ParseVertex(char *line, data_t *obj, int *index_of_cords);
 int ParseFaces(char *line, data_t *obj, int index_of_cords);
 void ParseVertFacCount(FILE *fpen, data_t *obj);

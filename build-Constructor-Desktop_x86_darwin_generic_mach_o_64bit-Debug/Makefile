@@ -52,10 +52,12 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../Constructor/main.cpp \
+SOURCES       = ../src/parser.c \
+		../Constructor/main.cpp \
 		../Constructor/mainwindow.cpp \
 		../Constructor/scene.cpp moc_mainwindow.cpp
-OBJECTS       = main.o \
+OBJECTS       = parser.o \
+		main.o \
 		mainwindow.o \
 		scene.o \
 		moc_mainwindow.o
@@ -285,6 +287,7 @@ DIST          = /usr/local/share/qt/mkspecs/features/spec_pre.prf \
 		/usr/local/share/qt/mkspecs/features/qt_config.prf \
 		/usr/local/share/qt/mkspecs/macx-clang/qmake.conf \
 		/usr/local/share/qt/mkspecs/features/spec_post.prf \
+		../Constructor/.qmake.stash \
 		/usr/local/share/qt/mkspecs/features/exclusive_builds.prf \
 		/usr/local/share/qt/mkspecs/features/mac/sdk.prf \
 		/usr/local/share/qt/mkspecs/features/toolchain.prf \
@@ -313,8 +316,10 @@ DIST          = /usr/local/share/qt/mkspecs/features/spec_pre.prf \
 		/usr/local/share/qt/mkspecs/features/exceptions.prf \
 		/usr/local/share/qt/mkspecs/features/yacc.prf \
 		/usr/local/share/qt/mkspecs/features/lex.prf \
-		../Constructor/Constructor.pro ../Constructor/mainwindow.h \
-		../Constructor/scene.h ../Constructor/main.cpp \
+		../Constructor/Constructor.pro ../src/parser.h \
+		../Constructor/mainwindow.h \
+		../Constructor/scene.h ../src/parser.c \
+		../Constructor/main.cpp \
 		../Constructor/mainwindow.cpp \
 		../Constructor/scene.cpp
 QMAKE_TARGET  = Constructor
@@ -325,7 +330,7 @@ TARGET        = Constructor.app/Contents/MacOS/Constructor
 EXPORT_QMAKE_MAC_SDK = macosx
 EXPORT_QMAKE_MAC_SDK_VERSION = 12.1
 EXPORT_QMAKE_XCODE_DEVELOPER_PATH = /Applications/Xcode.app/Contents/Developer
-EXPORT__QMAKE_STASH_ = 
+EXPORT__QMAKE_STASH_ = /opt/goinfre/marcelit/C8_3DViewer_v1.0-0-master/build-Constructor-Desktop_x86_darwin_generic_mach_o_64bit-Debug/.qmake.stash
 EXPORT_VALID_ARCHS = x86_64
 EXPORT_DEFAULT_ARCHS = x86_64
 EXPORT_ARCHS = $(filter $(EXPORT_VALID_ARCHS), $(if $(ARCHS), $(ARCHS), $(if $(EXPORT_DEFAULT_ARCHS), $(EXPORT_DEFAULT_ARCHS), $(EXPORT_VALID_ARCHS))))
@@ -567,6 +572,7 @@ Makefile: ../Constructor/Constructor.pro /usr/local/share/qt/mkspecs/macx-clang/
 		/usr/local/share/qt/mkspecs/features/qt_config.prf \
 		/usr/local/share/qt/mkspecs/macx-clang/qmake.conf \
 		/usr/local/share/qt/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/local/share/qt/mkspecs/features/exclusive_builds.prf \
 		/usr/local/share/qt/mkspecs/features/mac/sdk.prf \
 		/usr/local/share/qt/mkspecs/features/toolchain.prf \
@@ -828,6 +834,7 @@ Makefile: ../Constructor/Constructor.pro /usr/local/share/qt/mkspecs/macx-clang/
 /usr/local/share/qt/mkspecs/features/qt_config.prf:
 /usr/local/share/qt/mkspecs/macx-clang/qmake.conf:
 /usr/local/share/qt/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/local/share/qt/mkspecs/features/exclusive_builds.prf:
 /usr/local/share/qt/mkspecs/features/mac/sdk.prf:
 /usr/local/share/qt/mkspecs/features/toolchain.prf:
@@ -892,8 +899,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/local/share/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../Constructor/mainwindow.h ../Constructor/scene.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Constructor/main.cpp ../Constructor/mainwindow.cpp ../Constructor/scene.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../src/parser.h ../Constructor/mainwindow.h ../Constructor/scene.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../src/parser.c ../Constructor/main.cpp ../Constructor/mainwindow.cpp ../Constructor/scene.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Constructor/mainwindow.ui $(DISTDIR)/
 
 
@@ -904,6 +911,7 @@ clean: compiler_clean
 
 distclean: clean 
 	-$(DEL_FILE) -r Constructor.app
+	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
 
@@ -934,6 +942,26 @@ compiler_moc_header_clean:
 moc_mainwindow.cpp: ../Constructor/mainwindow.h \
 		/usr/local/lib/QtWidgets.framework/Headers/QMainWindow \
 		/usr/local/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/QtOpenGL \
+		/usr/local/lib/QtOpenGL.framework/Headers/qtopenglglobal.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglbuffer.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopengldebug.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglframebufferobject.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglpaintdevice.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglpixeltransferoptions.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglshaderprogram.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopengltexture.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopengltextureblitter.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopengltimerquery.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglversionfunctions.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglversionfunctionsfactory.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglversionprofile.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglvertexarrayobject.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglwindow.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qtopenglversion.h \
+		/usr/local/lib/QtWidgets.framework/Headers/QFileDialog \
+		/usr/local/lib/QtWidgets.framework/Headers/qfiledialog.h \
+		../src/parser.h \
 		moc_predefs.h \
 		/usr/local/share/qt/libexec/moc
 	/usr/local/share/qt/libexec/moc $(DEFINES) --include /opt/goinfre/marcelit/C8_3DViewer_v1.0-0-master/build-Constructor-Desktop_x86_darwin_generic_mach_o_64bit-Debug/moc_predefs.h -I/usr/local/share/qt/mkspecs/macx-clang -I/opt/goinfre/marcelit/C8_3DViewer_v1.0-0-master/Constructor -I/usr/local/lib/QtOpenGLWidgets.framework/Headers -I/usr/local/lib/QtOpenGL.framework/Headers -I/usr/local/lib/QtWidgets.framework/Headers -I/usr/local/lib/QtGui.framework/Headers -I/usr/local/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/usr/local/lib ../Constructor/mainwindow.h -o moc_mainwindow.cpp
@@ -946,7 +974,31 @@ compiler_uic_make_all: ui_mainwindow.h
 compiler_uic_clean:
 	-$(DEL_FILE) ui_mainwindow.h
 ui_mainwindow.h: ../Constructor/mainwindow.ui \
-		/usr/local/share/qt/libexec/uic
+		/usr/local/share/qt/libexec/uic \
+		../Constructor/scene.h \
+		/usr/local/lib/QtWidgets.framework/Headers/QWidget \
+		/usr/local/lib/QtWidgets.framework/Headers/qwidget.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/QtOpenGL \
+		/usr/local/lib/QtOpenGL.framework/Headers/qtopenglglobal.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglbuffer.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopengldebug.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglframebufferobject.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglpaintdevice.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglpixeltransferoptions.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglshaderprogram.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopengltexture.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopengltextureblitter.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopengltimerquery.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglversionfunctions.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglversionfunctionsfactory.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglversionprofile.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglvertexarrayobject.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglwindow.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qtopenglversion.h \
+		/usr/local/lib/QtOpenGLWidgets.framework/Headers/QOpenGLWidget \
+		/usr/local/lib/QtOpenGLWidgets.framework/Headers/qopenglwidget.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/QOpenGLShaderProgram \
+		../src/parser.h
 	/usr/local/share/qt/libexec/uic ../Constructor/mainwindow.ui -o ui_mainwindow.h
 
 compiler_rez_source_make_all:
@@ -961,9 +1013,32 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 
 ####### Compile
 
+parser.o: ../src/parser.c ../src/parser.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o parser.o ../src/parser.c
+
 main.o: ../Constructor/main.cpp ../Constructor/mainwindow.h \
 		/usr/local/lib/QtWidgets.framework/Headers/QMainWindow \
 		/usr/local/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/QtOpenGL \
+		/usr/local/lib/QtOpenGL.framework/Headers/qtopenglglobal.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglbuffer.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopengldebug.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglframebufferobject.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglpaintdevice.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglpixeltransferoptions.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglshaderprogram.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopengltexture.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopengltextureblitter.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopengltimerquery.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglversionfunctions.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglversionfunctionsfactory.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglversionprofile.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglvertexarrayobject.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglwindow.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qtopenglversion.h \
+		/usr/local/lib/QtWidgets.framework/Headers/QFileDialog \
+		/usr/local/lib/QtWidgets.framework/Headers/qfiledialog.h \
+		../src/parser.h \
 		/usr/local/lib/QtWidgets.framework/Headers/QApplication \
 		/usr/local/lib/QtWidgets.framework/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Constructor/main.cpp
@@ -971,7 +1046,33 @@ main.o: ../Constructor/main.cpp ../Constructor/mainwindow.h \
 mainwindow.o: ../Constructor/mainwindow.cpp ../Constructor/mainwindow.h \
 		/usr/local/lib/QtWidgets.framework/Headers/QMainWindow \
 		/usr/local/lib/QtWidgets.framework/Headers/qmainwindow.h \
-		ui_mainwindow.h
+		/usr/local/lib/QtOpenGL.framework/Headers/QtOpenGL \
+		/usr/local/lib/QtOpenGL.framework/Headers/qtopenglglobal.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglbuffer.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopengldebug.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglframebufferobject.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglpaintdevice.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglpixeltransferoptions.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglshaderprogram.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopengltexture.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopengltextureblitter.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopengltimerquery.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglversionfunctions.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglversionfunctionsfactory.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglversionprofile.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglvertexarrayobject.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qopenglwindow.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/qtopenglversion.h \
+		/usr/local/lib/QtWidgets.framework/Headers/QFileDialog \
+		/usr/local/lib/QtWidgets.framework/Headers/qfiledialog.h \
+		../src/parser.h \
+		ui_mainwindow.h \
+		../Constructor/scene.h \
+		/usr/local/lib/QtWidgets.framework/Headers/QWidget \
+		/usr/local/lib/QtWidgets.framework/Headers/qwidget.h \
+		/usr/local/lib/QtOpenGLWidgets.framework/Headers/QOpenGLWidget \
+		/usr/local/lib/QtOpenGLWidgets.framework/Headers/qopenglwidget.h \
+		/usr/local/lib/QtOpenGL.framework/Headers/QOpenGLShaderProgram
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../Constructor/mainwindow.cpp
 
 scene.o: ../Constructor/scene.cpp ../Constructor/scene.h \
@@ -996,7 +1097,8 @@ scene.o: ../Constructor/scene.cpp ../Constructor/scene.h \
 		/usr/local/lib/QtOpenGL.framework/Headers/qtopenglversion.h \
 		/usr/local/lib/QtOpenGLWidgets.framework/Headers/QOpenGLWidget \
 		/usr/local/lib/QtOpenGLWidgets.framework/Headers/qopenglwidget.h \
-		/usr/local/lib/QtOpenGL.framework/Headers/QOpenGLShaderProgram
+		/usr/local/lib/QtOpenGL.framework/Headers/QOpenGLShaderProgram \
+		../src/parser.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o scene.o ../Constructor/scene.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 

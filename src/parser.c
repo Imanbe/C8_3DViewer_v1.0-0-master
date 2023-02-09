@@ -1,6 +1,6 @@
 #include "parser.h"
 
-int Parsing(const char* filename, data_t *obj) {
+int Parsing(char* filename, data_t *obj) {
     FILE* fpen = fopen(filename, "r");
     int result = 0;
 
@@ -28,12 +28,11 @@ int Parsing(const char* filename, data_t *obj) {
             }
         }
 
-        PrintCords(obj);
-        PrintCords2(obj);
 
     } else {
         perror("fopen() ");
         result = 1;
+        printf("%s name of file\n", filename);
     }
 
     return result;

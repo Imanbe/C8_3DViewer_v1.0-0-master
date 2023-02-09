@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QtOpenGL>
+#include <QFileDialog>
 
 extern "C" {
 #include "../src/parser.h"
@@ -20,7 +21,14 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
+
 private:
     Ui::MainWindow *ui;
+signals:
+    void signal(QString);
 };
 #endif // MAINWINDOW_H
