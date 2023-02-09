@@ -28,6 +28,10 @@ int Parsing(char* filename, data_t *obj) {
             }
         }
 
+        PrintCords(obj);
+        printf("\n\n\n");
+        PrintCords2(obj);
+        // PrintCords2(obj);
 
     } else {
         perror("fopen() ");
@@ -36,6 +40,10 @@ int Parsing(char* filename, data_t *obj) {
     }
 
     return result;
+    free(obj->faces_cords);
+    free(obj->vertex_cords);
+    obj->faces_cords = NULL;
+    obj->vertex_cords = NULL;
 }
 
 
@@ -65,10 +73,10 @@ int ParseFaces(char *line, data_t *obj, int index_of_cords) {
             ++i_flag;
             char str[10] = {'\0'};
             int j = 0;
-            int i_str = i;
-            while (s21_digit_supp(line[i_str])) {
+            // int i_str = i;
+            while (s21_digit_supp(line[i])) {
                 str[j] = line[i];
-                i_str++;
+                i++;
                 j++;
             }
             char *dig_end;
@@ -126,13 +134,13 @@ void PrintCords(data_t *obj) {
 
 void PrintCords2(data_t *obj) {
     printf("---%d---\n", (*obj).faces_count);
-    // int j = 1;
+    int j = 1;
     for (int i = 0; i < (*obj).faces_count * 2; i++) {
         printf("%d ", (*obj).faces_cords[i]);
-        // if (j % 3 == 0) {
-        //     printf("\n");
-        // }
-        // j++;
+        if (j % 3 == 0) {
+            printf("\n");
+        }
+        j++;
     }
 }
 
