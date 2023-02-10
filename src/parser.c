@@ -1,25 +1,24 @@
 #include "parser.h"
 
 int Parsing(char* filename, data_t *obj) {
-    FILE* fpen = fopen(filename, "r");
     int result = 0;
 
     int index_faces_cords = 0, index_vertex_cords = 0;
     char line[255] = {};
 
+    // количество vertex и face
+    ParseVertFacCount(filename, obj);
 
+    FILE* fpen = fopen(filename, "r");
     if (fpen != NULL) {
-
-        ParseVertFacCount(fpen, obj);
         
+        // выделяем память для массивов
         if ((*obj).vertex_count > 0 && (*obj).faces_count > 0) {
             (*obj).vertex_cords = malloc((*obj).vertex_count * 3 * sizeof(double) + 1);
             (*obj).faces_cords = malloc((*obj).faces_count * 2 * sizeof(int) + 1);
         }
-
         
         // Добавляем всё в массив
-        fpen = fopen(filename, "r");
         while (fgets(line, 255, fpen) != NULL) {
             if (line[0] == 'v' && line[1] == ' ') {
                 ParseVertex(line, obj, &index_vertex_cords);
@@ -33,28 +32,23 @@ int Parsing(char* filename, data_t *obj) {
         result = 1;
     }
 
-    return result;
+    // освобождаем память
     free(obj->faces_cords);
     free(obj->vertex_cords);
     obj->faces_cords = NULL;
     obj->vertex_cords = NULL;
+
+    return result;
 }
 
 
 void ParseVertex(char *line, data_t *obj, int *index_of_cords) {
-    double digital;
-    for (size_t i = 0; i < strlen(line); i++) {
-        if (line[i] == ' ') {
-            i += 1;
-            const char *dig_start = &line[i];
-            while (strchr(line, ' ') == NULL) {
-                i += 1;
-            }
-            char *dig_end = &line[i];
-            digital = strtod(dig_start, &dig_end);
-            (*obj).vertex_cords[*index_of_cords] = digital;
-            *index_of_cords += 1;
-        }
+    if (line[0] == 'v' && line[1] == ' ')  {
+        sscanf(line, "v %lf %lf %lf",
+        &obj->vertex_cords[*index_of_cords],
+        &obj->vertex_cords[*index_of_cords+1],
+        &obj->vertex_cords[*index_of_cords+2]);
+        *index_of_cords += 3;
     }
 }
 
@@ -67,7 +61,6 @@ int ParseFaces(char *line, data_t *obj, int index_of_cords) {
             ++i_flag;
             char str[10] = {'\0'};
             int j = 0;
-            // int i_str = i;
             while (s21_digit_supp(line[i])) {
                 str[j] = line[i];
                 i++;
@@ -75,50 +68,50 @@ int ParseFaces(char *line, data_t *obj, int index_of_cords) {
             }
             char *dig_end;
             digital = strtol(str, &dig_end, 10);
-            (*obj).faces_cords[index_of_cords] = digital;
+            obj->faces_cords[index_of_cords] = digital;
 
             if (i_flag == 1) {
                 closure_dig = digital;
                 ++index_of_cords;
             }
             if (i_flag != 1) {
-                (*obj).faces_cords[++index_of_cords] = digital;
+                obj->faces_cords[++index_of_cords] = digital;
                 ++index_of_cords;
             }
         }
     }
-    (*obj).faces_cords[index_of_cords++] = closure_dig;
+    obj->faces_cords[index_of_cords++] = closure_dig;
     return (index_of_cords);
 }
 
-void ParseVertFacCount(FILE *fpen, data_t *obj) {
-    char c;
-    char bel_c;
+void ParseVertFacCount(char *filename, data_t *obj) {
+    FILE *fpen = fopen(filename, "r");
+    int i = 0;
 
-    c = fgetc(fpen);
-    bel_c = fgetc(fpen);
-
-    while ((bel_c != EOF)) {
-        if (c == 'v' && bel_c == ' ') {
-            (*obj).vertex_count += 1;
-        } else if (c == 'f') {
-            while (bel_c != '\n' && bel_c != EOF) {
-                if (bel_c == ' ') {
-                    (*obj).faces_count += 1;
+    if (fpen != NULL) {
+        char line[255] = {};
+        while (fgets(line, 255, fpen) != NULL) {
+            if (line[0] == 'v' && line[1] == ' ') {
+                obj->vertex_count += 1;
+            } else if (line[0] == 'f' && line[1] == ' ') {
+                i = 0;
+                while (line[i] != '\n' && line[i] != '\0') {
+                    if (line[i] == ' ') {
+                        obj->faces_count += 1;
+                    }
+                    i++;
                 }
-                bel_c = fgetc(fpen);
             }
         }
-        c = bel_c;
-        bel_c = fgetc(fpen);
-    }        
+        fclose(fpen);
+    }
 }
 
 void PrintCords(data_t *obj) {
-    printf("---%lf---\n", (*obj).vertex_count);
+    printf("---%lf---\n", obj->vertex_count);
     int j = 1;
-    for (int i = 0; i < (*obj).vertex_count * 3; i++) {
-        printf("%lf ", (*obj).vertex_cords[i]);
+    for (int i = 0; i < obj->vertex_count * 3; i++) {
+        printf("%lf ", obj->vertex_cords[i]);
         if (j % 3 == 0) {
             printf("\n");
         }
@@ -127,10 +120,10 @@ void PrintCords(data_t *obj) {
 }
 
 void PrintCords2(data_t *obj) {
-    printf("---%d---\n", (*obj).faces_count);
+    printf("---%d---\n", obj->faces_count);
     int j = 1;
-    for (int i = 0; i < (*obj).faces_count * 2; i++) {
-        printf("%d ", (*obj).faces_cords[i]);
+    for (int i = 0; i < obj->faces_count * 2; i++) {
+        printf("%d ", obj->faces_cords[i]);
         if (j % 3 == 0) {
             printf("\n");
         }

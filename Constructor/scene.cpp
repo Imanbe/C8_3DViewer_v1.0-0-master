@@ -39,7 +39,7 @@ void Scene::read_file()
     QByteArray ba = filepath.toLocal8Bit();  // перевод из Qstring in *str
     char *path_file = ba.data();
     Parsing(path_file, &obj);
-//    draw();
+    update();
 }
 
 void Scene::draw() {

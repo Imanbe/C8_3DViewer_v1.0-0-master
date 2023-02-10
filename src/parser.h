@@ -17,7 +17,7 @@ typedef struct DATA {
 int Parsing(char* filename, data_t *obj);
 void ParseVertex(char *line, data_t *obj, int *index_of_cords);
 int ParseFaces(char *line, data_t *obj, int index_of_cords);
-void ParseVertFacCount(FILE *fpen, data_t *obj);
+void ParseVertFacCount(char *filename, data_t *obj);
 void PrintCords(data_t *obj);
 void PrintCords2(data_t *obj);
 int s21_digit_supp(char ind);
