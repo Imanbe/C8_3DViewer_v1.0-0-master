@@ -28,15 +28,9 @@ int Parsing(char* filename, data_t *obj) {
             }
         }
 
-        PrintCords(obj);
-        printf("\n\n\n");
-        PrintCords2(obj);
-        // PrintCords2(obj);
-
     } else {
         perror("fopen() ");
         result = 1;
-        printf("%s name of file\n", filename);
     }
 
     return result;
