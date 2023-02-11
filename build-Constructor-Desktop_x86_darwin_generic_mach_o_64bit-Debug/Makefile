@@ -1066,13 +1066,7 @@ mainwindow.o: ../Constructor/mainwindow.cpp ../Constructor/mainwindow.h \
 		/usr/local/lib/QtWidgets.framework/Headers/QFileDialog \
 		/usr/local/lib/QtWidgets.framework/Headers/qfiledialog.h \
 		../src/parser.h \
-		ui_mainwindow.h \
-		../Constructor/scene.h \
-		/usr/local/lib/QtWidgets.framework/Headers/QWidget \
-		/usr/local/lib/QtWidgets.framework/Headers/qwidget.h \
-		/usr/local/lib/QtOpenGLWidgets.framework/Headers/QOpenGLWidget \
-		/usr/local/lib/QtOpenGLWidgets.framework/Headers/qopenglwidget.h \
-		/usr/local/lib/QtOpenGL.framework/Headers/QOpenGLShaderProgram
+		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../Constructor/mainwindow.cpp
 
 scene.o: ../Constructor/scene.cpp ../Constructor/scene.h \

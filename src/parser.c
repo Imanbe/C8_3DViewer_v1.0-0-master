@@ -13,9 +13,9 @@ int Parsing(char* filename, data_t *obj) {
     if (fpen != NULL) {
         
         // выделяем память для массивов
-        if ((*obj).vertex_count > 0 && (*obj).faces_count > 0) {
-            (*obj).vertex_cords = malloc((*obj).vertex_count * 3 * sizeof(double) + 1);
-            (*obj).faces_cords = malloc((*obj).faces_count * 2 * sizeof(int) + 1);
+        if (obj->meta_inf.vertex_count > 0 && obj->meta_inf.faces_count > 0) {
+            obj->vertex_cords = malloc(obj->meta_inf.vertex_count * 3 * sizeof(double) + 1);
+            obj->faces_cords = malloc(obj->meta_inf.faces_count * 2 * sizeof(int) + 1);
         }
         
         // Добавляем всё в массив
@@ -29,14 +29,8 @@ int Parsing(char* filename, data_t *obj) {
 
     } else {
         perror("fopen() ");
-        result = 1;
+        obj->meta_inf.memory_check = MEMORY_ERROR;
     }
-
-    // освобождаем память
-    free(obj->faces_cords);
-    free(obj->vertex_cords);
-    obj->faces_cords = NULL;
-    obj->vertex_cords = NULL;
 
     return result;
 }
@@ -92,12 +86,12 @@ void ParseVertFacCount(char *filename, data_t *obj) {
         char line[255] = {};
         while (fgets(line, 255, fpen) != NULL) {
             if (line[0] == 'v' && line[1] == ' ') {
-                obj->vertex_count += 1;
+                obj->meta_inf.vertex_count += 1;
             } else if (line[0] == 'f' && line[1] == ' ') {
                 i = 0;
                 while (line[i] != '\n' && line[i] != '\0') {
                     if (line[i] == ' ') {
-                        obj->faces_count += 1;
+                        obj->meta_inf.faces_count += 1;
                     }
                     i++;
                 }
@@ -108,9 +102,9 @@ void ParseVertFacCount(char *filename, data_t *obj) {
 }
 
 void PrintCords(data_t *obj) {
-    printf("---%lf---\n", obj->vertex_count);
+    printf("---%d---\n", obj->meta_inf.vertex_count);
     int j = 1;
-    for (int i = 0; i < obj->vertex_count * 3; i++) {
+    for (int i = 0; i < obj->meta_inf.vertex_count * 3; i++) {
         printf("%lf ", obj->vertex_cords[i]);
         if (j % 3 == 0) {
             printf("\n");
@@ -120,9 +114,9 @@ void PrintCords(data_t *obj) {
 }
 
 void PrintCords2(data_t *obj) {
-    printf("---%d---\n", obj->faces_count);
+    printf("---%d---\n", obj->meta_inf.faces_count);
     int j = 1;
-    for (int i = 0; i < obj->faces_count * 2; i++) {
+    for (int i = 0; i < obj->meta_inf.faces_count * 2; i++) {
         printf("%d ", obj->faces_cords[i]);
         if (j % 3 == 0) {
             printf("\n");

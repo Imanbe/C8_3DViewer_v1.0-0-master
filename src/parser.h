@@ -7,12 +7,21 @@
 #include <stdlib.h>
 #include <errno.h>
 
+#define MEMORY_OK 0
+#define MEMORY_ERROR 1
+
+typedef struct METADATA {
+    unsigned vertex_count;
+    unsigned faces_count;
+    unsigned memory_check;
+} meta_t;
+
 typedef struct DATA {
-    double vertex_count;
-    int faces_count;
     double *vertex_cords;
     int *faces_cords;
+    meta_t meta_inf;
 } data_t;
+
 
 int Parsing(char* filename, data_t *obj);
 void ParseVertex(char *line, data_t *obj, int *index_of_cords);
