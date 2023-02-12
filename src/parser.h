@@ -29,6 +29,7 @@ int ParseFaces(char *line, data_t *obj, int index_of_cords);
 void ParseVertFacCount(char *filename, data_t *obj);
 void PrintCords(data_t *obj);
 void PrintCords2(data_t *obj);
+void PrintIndexes(data_t *obj);
 int s21_digit_supp(char ind);
 
 #endif  // SRC_PARSER_H

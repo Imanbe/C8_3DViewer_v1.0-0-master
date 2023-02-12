@@ -29,8 +29,8 @@ void Scene::resizeGL(int w, int h) {
 
     glViewport(0, 0, w, h);
 
-    aspected_model_width = w / 20;
-    aspected_model_height = h / 20;
+    aspected_model_width = w / 10;
+    aspected_model_height = h / 10;
 
     int left_width = -aspected_model_width / 2;
     int right_width = aspected_model_width / 2;
@@ -41,6 +41,7 @@ void Scene::resizeGL(int w, int h) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(left_width, right_width, down_height, top_height, -view_zone, view_zone);
+//    glOrtho(-10, 10, 10, -10, -100, 100);
 }
 
 void Scene::normalizeModel() {
@@ -56,6 +57,7 @@ void Scene::normalizeModel() {
         double aspect = *max_elem / 10.0;
         scaleBigModel(aspect);
     }
+    delete[] aspected_vertex_cords;
 }
 
 void Scene::scaleBigModel(double aspect) {
@@ -75,15 +77,28 @@ void Scene::read_file()
 }
 
 void Scene::draw() {
-    glVertexPointer(3, GL_DOUBLE, 0, obj.vertex_cords);
+
+    GLint *indexs_model = new GLint[obj.meta_inf.faces_count*2];
+    GLdouble *vertex_cords = new GLdouble[obj.meta_inf.vertex_count*3];
+
+    for (uint i = 0; i < obj.meta_inf.faces_count*2; ++i) {
+        indexs_model[i] = obj.faces_cords[i];
+    }
+
+    for (uint i = 0; i < obj.meta_inf.vertex_count*3; ++i) {
+        vertex_cords[i] = obj.vertex_cords[i];
+    }
+
+    glVertexPointer(3, GL_DOUBLE, 0, vertex_cords);
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glColor3f(1, 1, 1);
     glDrawArrays(GL_POINTS, 0, obj.meta_inf.vertex_count);
     glDisable(GL_LINE_STIPPLE);
-    glEnable(GL_LINE);
-    glDrawElements(GL_LINES, obj.meta_inf.faces_count * 2, GL_INT, obj.faces_cords);
-    glLineWidth(2);
+    glEnable(GL_LINES);
+    glLineWidth(5);
+    glDrawElements(GL_LINE, obj.meta_inf.faces_count * 2, GL_INT, indexs_model);
+
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 

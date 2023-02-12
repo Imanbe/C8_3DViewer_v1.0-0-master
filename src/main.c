@@ -4,5 +4,7 @@ int main() {
     data_t obj = {};
     char* filename = "/opt/goinfre/marcelit/C8_3DViewer_v1.0-0-master/src/plant.obj";
     Parsing(filename, &obj);
+    PrintIndexes(&obj);
     return 0;
 }
+// /opt/goinfre/marcelit/C8_3DViewer_v1.0-0-master/src/FinalBaseMesh.obj

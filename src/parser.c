@@ -125,6 +125,15 @@ void PrintCords2(data_t *obj) {
     }
 }
 
+void PrintIndexes(data_t *obj) {
+    for (int i = 0; i != obj->meta_inf.faces_count * 2; ++i){
+        printf("%d\t", obj->faces_cords[i]);
+        if (i % 8 == 0) {
+            printf("%c" ,'\n');
+        }
+    }
+}
+
 int s21_digit_supp(char ind) {
   int result = 0;
   if (ind >= '0' && ind <= '9') {
