@@ -24,6 +24,6 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_pushButton_2_clicked()
 {
     ui->widget->read_file();
-    ui->textEdit->setText("DONE");
+    ui->textEdit->setText(QString::number(ui->widget->obj.meta_inf.faces_count));
 }
 

@@ -18,10 +18,11 @@ public:
     Scene(QWidget *parent);
     void read_file();
     QString filepath;
+    data_t obj;
 
 private:
     float xRot, yRot, zRot;
-    data_t obj;
+//    data_t obj;
     QPoint mPos;
     QTimer tmr;
 

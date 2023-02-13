@@ -41,7 +41,8 @@ void Scene::resizeGL(int w, int h) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(left_width, right_width, down_height, top_height, -view_zone, view_zone);
-//    glOrtho(-10, 10, 10, -10, -100, 100);
+
+//    glOrtho(-1, 1, 1, -1, 1, 9999);
 }
 
 void Scene::normalizeModel() {
