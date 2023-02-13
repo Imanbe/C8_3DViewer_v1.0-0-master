@@ -18,7 +18,7 @@ typedef struct METADATA {
 
 typedef struct DATA {
     double *vertex_cords;
-    int *faces_cords;
+    unsigned *faces_cords;
     meta_t meta_inf;
 } data_t;
 

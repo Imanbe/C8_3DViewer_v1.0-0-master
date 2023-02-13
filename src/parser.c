@@ -101,7 +101,7 @@ void ParseVertFacCount(char *filename, data_t *obj) {
     }
 }
 
-void PrintCords(data_t *obj) {
+/*void PrintCords(data_t *obj) {
     printf("---%d---\n", obj->meta_inf.vertex_count);
     int j = 1;
     for (int i = 0; i < obj->meta_inf.vertex_count * 3; i++) {
@@ -132,7 +132,7 @@ void PrintIndexes(data_t *obj) {
             printf("%c" ,'\n');
         }
     }
-}
+}*/
 
 int s21_digit_supp(char ind) {
   int result = 0;

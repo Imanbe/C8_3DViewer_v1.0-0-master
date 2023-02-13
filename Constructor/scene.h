@@ -19,6 +19,7 @@ public:
     void read_file();
     QString filepath;
     data_t obj;
+    void normalizeModel();
 
 private:
     float xRot, yRot, zRot;
@@ -37,7 +38,6 @@ private:
     void resizeGL(int w, int h) override;
     void draw();
 //    void initModel(data_t *obj);
-    void normalizeModel();
     void scaleBigModel(double aspect);
 public slots:
     void slot(QString filepath);
