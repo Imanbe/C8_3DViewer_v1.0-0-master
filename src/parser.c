@@ -1,10 +1,11 @@
 #include "parser.h"
 
 int Parsing(char* filename, data_t *obj) {
+    initModel(obj);
     int result = 0;
 
     int index_faces_cords = 0, index_vertex_cords = 0;
-    char line[255] = {};
+    char line[512] = {};
 
     // количество vertex и face
     ParseVertFacCount(filename, obj);
@@ -14,18 +15,19 @@ int Parsing(char* filename, data_t *obj) {
         
         // выделяем память для массивов
         if (obj->meta_inf.vertex_count > 0 && obj->meta_inf.faces_count > 0) {
-            obj->vertex_cords = malloc(obj->meta_inf.vertex_count * 3 * sizeof(double) + 1);
-            obj->faces_cords = malloc(obj->meta_inf.faces_count * 2 * sizeof(int) + 1);
+            obj->vertex_cords = malloc(obj->meta_inf.vertex_count * 3 * sizeof(double));
+            obj->faces_cords = malloc(obj->meta_inf.faces_count * 2 * sizeof(unsigned));
         }
         
         // Добавляем всё в массив
-        while (fgets(line, 255, fpen) != NULL) {
+        while (fgets(line, 512, fpen) != NULL) {
             if (line[0] == 'v' && line[1] == ' ') {
                 ParseVertex(line, obj, &index_vertex_cords);
             } else if (line[0] == 'f' && line[1] == ' ') {
                 index_faces_cords = ParseFaces(line, obj, index_faces_cords);
             }
         }
+        obj->meta_inf.memory_check = MEMORY_OK;
 
     } else {
         perror("fopen() ");
@@ -80,20 +82,17 @@ int ParseFaces(char *line, data_t *obj, int index_of_cords) {
 
 void ParseVertFacCount(char *filename, data_t *obj) {
     FILE *fpen = fopen(filename, "r");
-    int i = 0;
 
     if (fpen != NULL) {
-        char line[255] = {};
-        while (fgets(line, 255, fpen) != NULL) {
+        char line[512] = {};
+        while (fgets(line, 512, fpen) != NULL) {
             if (line[0] == 'v' && line[1] == ' ') {
                 obj->meta_inf.vertex_count += 1;
             } else if (line[0] == 'f' && line[1] == ' ') {
-                i = 0;
-                while (line[i] != '\n' && line[i] != '\0') {
-                    if (line[i] == ' ') {
+                for (int i = 0; i < (int)strlen(line); i++) {
+                    if (line[i] == ' ' && s21_digit_supp(line[i+1])) {
                         obj->meta_inf.faces_count += 1;
                     }
-                    i++;
                 }
             }
         }
@@ -134,10 +133,17 @@ void PrintIndexes(data_t *obj) {
     }
 }*/
 
-int s21_digit_supp(char ind) {
+int s21_digit_supp(char token) {
   int result = 0;
-  if (ind >= '0' && ind <= '9') {
+  if (token >= '0' && token <= '9') {
     result = 1;
   }
   return result;
 }
+
+void initModel(data_t *obj) {
+    obj->meta_inf.faces_count = 0;
+    obj->meta_inf.vertex_count= 0;
+    obj->meta_inf.memory_check= MEMORY_NULL;
+}
+

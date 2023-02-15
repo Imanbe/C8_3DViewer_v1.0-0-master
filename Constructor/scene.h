@@ -20,6 +20,7 @@ public:
     QString filepath;
     data_t obj;
     void normalizeModel();
+    void cleanOBJ();
 
 private:
     float xRot, yRot, zRot;

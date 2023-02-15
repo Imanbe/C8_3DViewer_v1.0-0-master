@@ -7,8 +7,9 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#define MEMORY_OK 0
-#define MEMORY_ERROR 1
+#define MEMORY_OK 1
+#define MEMORY_ERROR -1
+#define MEMORY_NULL 0
 
 typedef struct METADATA {
     unsigned vertex_count;
@@ -30,6 +31,7 @@ void ParseVertFacCount(char *filename, data_t *obj);
 void PrintCords(data_t *obj);
 void PrintCords2(data_t *obj);
 void PrintIndexes(data_t *obj);
-int s21_digit_supp(char ind);
+int s21_digit_supp(char token);
+void initModel(data_t *obj);
 
 #endif  // SRC_PARSER_H

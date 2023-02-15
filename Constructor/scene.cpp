@@ -44,21 +44,22 @@ void Scene::resizeGL(int w, int h) {
 }
 
 void Scene::normalizeModel() {
-    double *aspected_vertex_cords = new double[obj.meta_inf.vertex_count*3];
+//    double *aspected_vertex_cords = new double[obj.meta_inf.vertex_count*3];
 
-    for (unsigned i = 0; i < obj.meta_inf.vertex_count; i++) {
-        aspected_vertex_cords[i] = fabs(obj.vertex_cords[i]);
-    }
+//    for (unsigned i = 0; i < obj.meta_inf.vertex_count; i++) {
+//        aspected_vertex_cords[i] = fabs(obj.vertex_cords[i]);
+//    }
 
-    double *max_elem = std::max_element(aspected_vertex_cords, aspected_vertex_cords + obj.meta_inf.vertex_count*3);
-    delete[] aspected_vertex_cords;
+//    double *max_elem = std::max_element(aspected_vertex_cords, aspected_vertex_cords + obj.meta_inf.vertex_count*3);
+//    delete[] aspected_vertex_cords;
 
-    if (*max_elem >= 20) {
-        double aspect = *max_elem / 10.0;
-        scaleBigModel(aspect);
-    }
-    qDebug() << "OXOYOZ_max fabs element: " << *max_elem << "\n";
-    qDebug() << "checking" <<obj.meta_inf.faces_count << "\n";
+//    if (*max_elem >= 20) {
+//        double aspect = *max_elem / 10.0;
+//        scaleBigModel(aspect);
+//    }
+//    qDebug() << "OXOYOZ_max fabs element: " << *max_elem << "\n";
+    qDebug() << "checking" << "faces count in file" << obj.meta_inf.faces_count << "\n";
+//    free(max_elem);
 }
 
 void Scene::scaleBigModel(double aspect) {
@@ -96,4 +97,12 @@ void Scene::mouseMoveEvent(QMouseEvent *mo)
     xRot = 1/M_PI*(mo->pos().y() - mPos.y());
     yRot = 1/M_PI*(mo->pos().x() - mPos.x());
     update();
+}
+
+void Scene::cleanOBJ() {
+    free(obj.faces_cords);
+    free(obj.vertex_cords);
+    obj.meta_inf.faces_count = 0;
+    obj.meta_inf.vertex_count = 0;
+    obj.meta_inf.memory_check = 0;
 }
