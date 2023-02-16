@@ -44,14 +44,13 @@ void Scene::resizeGL(int w, int h) {
 }
 
 void Scene::normalizeModel() {
-    double *aspected_vertex_cords = new double[obj.meta_inf.vertex_count*3];
+    double *aspected_vertex_cords = new double[obj.meta_inf.vertex_count];
 
-    for (unsigned i = 0; i < obj.meta_inf.vertex_count * 3; i++) {
+    for (unsigned i = 0; i < obj.meta_inf.vertex_count; i++) {
         aspected_vertex_cords[i] = fabs(obj.vertex_cords[i]);
     }
 
-    double *max_elem = std::max_element(aspected_vertex_cords, aspected_vertex_cords + obj.meta_inf.vertex_count*3);
-    delete[] aspected_vertex_cords;
+    double *max_elem = std::max_element(aspected_vertex_cords, aspected_vertex_cords + obj.meta_inf.vertex_count);
 
     if (*max_elem >= 20) {
         double aspect = *max_elem / 10.0;
@@ -59,11 +58,11 @@ void Scene::normalizeModel() {
     }
     qDebug() << "OXOYOZ_max fabs element: " << *max_elem << "\n";
     qDebug() << "checking" << "faces count in file" << obj.meta_inf.faces_count << "\n";
-    free(max_elem);
+    delete[] aspected_vertex_cords;
 }
 
 void Scene::scaleBigModel(double aspect) {
-    for (uint i = 0; i < obj.meta_inf.vertex_count*3; i++) {
+    for (uint i = 0; i < obj.meta_inf.vertex_count; i++) {
         obj.vertex_cords[i] /= aspect;
     }
     update();
@@ -71,10 +70,11 @@ void Scene::scaleBigModel(double aspect) {
 
 void Scene::read_file()
 {
-    QByteArray ba = filepath.toLocal8Bit();  // перевод из Qstring in *str
+    QByteArray ba = filepath.toLocal8Bit();
     char *path_file = ba.data();
-//    char *path_file = "/opt/goinfre/marcelit/32-mercedes-benz-gls-580-2020/uploads_files_2787791_Mercedes+Benz+GLS+580.obj";
     Parsing(path_file, &obj);
+
+    if (obj.meta_inf.memory_check == MEMORY_OK) normalizeModel();
 }
 
 void Scene::draw() {
@@ -83,7 +83,7 @@ void Scene::draw() {
     glLineWidth(1);
     glColor3f(1, 1, 1);
     glDisable(GL_LINE_STIPPLE);
-    glDrawElements(GL_LINES, (obj.meta_inf.faces_count * 2), GL_UNSIGNED_INT, obj.faces_cords);
+    glDrawElements(GL_LINES, (obj.meta_inf.faces_count), GL_UNSIGNED_INT, obj.faces_cords);
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 
