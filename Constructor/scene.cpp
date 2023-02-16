@@ -78,13 +78,17 @@ void Scene::read_file()
 }
 
 void Scene::draw() {
-    glVertexPointer(3, GL_DOUBLE, 0, obj.vertex_cords);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glLineWidth(1);
-    glColor3f(1, 1, 1);
-    glDisable(GL_LINE_STIPPLE);
-    glDrawElements(GL_LINES, (obj.meta_inf.faces_count), GL_UNSIGNED_INT, obj.faces_cords);
-    glDisableClientState(GL_VERTEX_ARRAY);
+//    if (obj.meta_inf.memory_check == MEMORY_OK) {
+        glVertexPointer(3, GL_DOUBLE, 0, obj.vertex_cords);
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glLineWidth(1);
+        glColor3f(1, 1, 1);
+        glDisable(GL_LINE_STIPPLE);
+        glDrawElements(GL_LINES, (obj.meta_inf.faces_count), GL_UNSIGNED_INT, obj.faces_cords);
+        glDisableClientState(GL_VERTEX_ARRAY);
+//    } else {
+//        qDebug() << "Error in draw() function: MEMORY_NULL" << '\n';
+//    }
 }
 
 void Scene::mousePressEvent(QMouseEvent * mo)
