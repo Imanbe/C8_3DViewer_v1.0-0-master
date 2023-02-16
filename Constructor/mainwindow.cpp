@@ -33,13 +33,10 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_pushButton_2_clicked()
 {
     if (ui->widget->obj.meta_inf.memory_check == MEMORY_OK) {
-        ui->widget->cleanOBJ();
+        ui->widget->read_file();
+        ui->widget->normalizeModel();
+        update();
     }
-    ui->widget->read_file();
-    ui->widget->normalizeModel();
-    update();
-//    ui->textEdit->setText(QString::number(ui->widget->obj.meta_inf.faces_count));
-
-    qDebug() << "total faces counts" << ui->widget->obj.meta_inf.faces_count*2;
+    qDebug() << "total faces counts" << ui->widget->obj.meta_inf.faces_count;
 }
 
