@@ -67,7 +67,7 @@ int ParseFaces(char *line, data_t *obj, int index_of_cords) {
                 j++;
             }
             char *dig_end;
-            digital = strtol(str, &dig_end, 10);
+            digital = strtol(str, &dig_end, 10) - 1;
             obj->faces_cords[index_of_cords] = digital;
 
             if (i_flag == 1) {
